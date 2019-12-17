@@ -5,7 +5,7 @@ Backend for FinStock stock-finder. Scrapes stock key-indicators from stocks list
 ---
 ## Requirements
 
-For development, you will only need [Node.js]((https://nodejs.org/) installed in your environment.
+For development, you will only need [Node.js](https://nodejs.org/) installed in your environment.
 
 ## Install
 
