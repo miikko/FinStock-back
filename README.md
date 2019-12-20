@@ -7,7 +7,7 @@ Scraped data can be requested from `/api/prices` and `/api/stocks` endpoints.
 ---
 ## Requirements
 
-For development, you will only need [Node.js]((https://nodejs.org/) installed in your environment.
+For development, you will only need [Node.js](https://nodejs.org/) installed in your environment.
 
 ## Install
 
