@@ -3,6 +3,7 @@ const cors = require("cors")
 const bodyParser = require("body-parser")
 const config = require("./utils/config")
 const dbManager = require("./db/dbManager")
+const middleware = require("./utils/middleware")
 const pricesRouter = require("./routers/prices")
 const stocksRouter = require("./routers/stocks")
 
@@ -12,6 +13,7 @@ dbManager.openConnection(config.MONGODB_URL)
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(middleware.requestLogger)
 
 app.use("/api/prices", pricesRouter)
 app.use("/api/stocks", stocksRouter)
