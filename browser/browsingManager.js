@@ -10,7 +10,8 @@ const openBrowser = async () => {
 
 const closeBrowser = async () => {
   if (browser) {
-    browser.close()
+    await browser.close()
+    browser = null
   }
 }
 
@@ -18,4 +19,17 @@ const getNewPage = async () => {
   return browser.newPage()
 }
 
-module.exports = { openBrowser, closeBrowser, getNewPage }
+const numOfPagesOpen = async () => {
+  if (!browser) {
+    return 0
+  }
+  const pages = await browser.pages()
+  return pages.length
+}
+
+module.exports = {
+  openBrowser,
+  closeBrowser,
+  getNewPage,
+  numOfPagesOpen
+}

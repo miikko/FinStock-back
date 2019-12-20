@@ -17,7 +17,7 @@ const getPrices = async () => {
   const stockDivs = await getStockDivs(page)
   const prices = await Promise.all(stockDivs.map(div =>
     div.$$eval(stockListColSelector, cols => (
-      { name: cols[0].innerText, price: cols[1].innerText }
+      { name: cols[0].innerText, value: cols[1].innerText }
     ))
   ))
   await page.close()

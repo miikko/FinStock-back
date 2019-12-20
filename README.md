@@ -2,6 +2,8 @@
 
 Backend for FinStock stock-finder. Scrapes stock key-indicators from stocks listed in the Helsinki XHEL stock-market.
 
+Scraped data can be requested from `/api/prices` and `/api/stocks` endpoints.
+
 ---
 ## Requirements
 
@@ -18,6 +20,12 @@ For development, you will only need [Node.js]((https://nodejs.org/) installed in
 In order to save data to a MongoDB database, a MONGODB_URL environment variable needs to be set. One way to set it is to create a `.env` file at the project root folder and add the following content: `MONGODB_URL=YOUR_MONGO_URL_HERE`.
 
 ## Running the project
+
+To start the server:
+
+```
+$ npm start
+```
 
 To scrape stock data from [Kauppalehti](https://www.kauppalehti.fi/porssi/kurssit/XHEL) to a database:
 
