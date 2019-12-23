@@ -70,6 +70,9 @@ const extractIndicator = async (row, recordedYears) => {
     const indicator = {
       name: columns[0].innerText
     }
+    if (indicator.name === "Markkina-arvo") {
+      indicator.name = "Markkina-arvo (P)"
+    }
     for (let i = 0; i < recordedYears.length; i++) {
       indicator[recordedYears[i]] = columns[i + 1].innerText 
     }

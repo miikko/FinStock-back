@@ -33,7 +33,7 @@ const updateStock = async (stock) => {
   const newIndicator = stock.indicators[someIndicatorName]
   const yearsToAdd = getMissingYears(savedIndicator, newIndicator)
   if (yearsToAdd.length === 0) {
-    return stock
+    return
   }
   yearsToAdd.map(yearToAdd => {
     indicatorNames.map(indicatorName => {

@@ -4,6 +4,8 @@ const browsingManager = require("./browser/browsingManager")
 const dbManager = require("./db/dbManager")
 const config = require("./utils/config")
 
+const numOfStocksInMarket = 141
+
 const main = async () => {
   await browsingManager.openBrowser()
   const stockNamesAndUrls = await stockListing.getListedStockNamesAndUrls()
@@ -19,7 +21,7 @@ const main = async () => {
     console.log(`${stockNamesAndUrls.length} stocks remaining`)
   }
   await browsingManager.closeBrowser()
-  if (stocks.length !== 141) {
+  if (stocks.length !== numOfStocksInMarket) {
     console.log("Something went wrong")
     return
   }
@@ -33,7 +35,7 @@ const main = async () => {
     return dbManager.saveStock(stock)
   }))
   await dbManager.closeConnection()
-  console.log(`${savedStocks.length} stocks saved`)
+  console.log(`${savedStocks.filter(stock => stock).length} stocks saved/updated`)
 }
 
 main()
