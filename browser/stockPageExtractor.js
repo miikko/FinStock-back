@@ -74,7 +74,7 @@ const extractIndicator = async (row, recordedYears) => {
       indicator.name = "Markkina-arvo (P)"
     }
     for (let i = 0; i < recordedYears.length; i++) {
-      indicator[recordedYears[i]] = columns[i + 1].innerText 
+      indicator[recordedYears[i]] = columns[i + 1].innerText.replace(",", "") 
     }
     return indicator
   }, recordedYears)

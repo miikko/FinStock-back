@@ -22,8 +22,10 @@ const main = async () => {
   }
   await browsingManager.closeBrowser()
   if (stocks.length !== numOfStocksInMarket) {
-    console.log("Something went wrong")
-    return
+    console.log(
+      `Unusual amount of stocks scraped, expected ${numOfStocksInMarket}, ` + 
+      `got ${stocks.length}`
+    )
   }
   const filteredStocks = stocks.filter(stock => stock.indicators)
   await dbManager.openConnection(config.MONGODB_URL)
