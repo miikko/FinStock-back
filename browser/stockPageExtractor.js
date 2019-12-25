@@ -1,5 +1,11 @@
 const browsingManager = require("./browsingManager")
 
+const wantedIndicatorNames = [
+  "Markkina-arvo (P)", "Markkina-arvo", "Osinko/osake, eur", "P/B-luku",
+  "P/E-luku", "Oman pääoman tuotto-%", "Oman pääoman tuotto, %",
+  "Nettovelkaantumisaste, %", "Current Ratio"
+]
+
 const getIndicators = async (pageUrl) => {
   const page = await browsingManager.getNewPage()
   await page.goto(pageUrl + "/tilinpaatos")
@@ -10,7 +16,7 @@ const getIndicators = async (pageUrl) => {
     return
   }
   const recordedYears = await getRecordedYears(page)
-  const tableRows = await getTableRows(page)
+  const tableRows = await getRelevantTableRows(page)
   const indicatorArray = await Promise.all(tableRows.map(
     row => extractIndicator(row, recordedYears)
   ))
@@ -33,10 +39,23 @@ const recordsExist = async (page) => {
   return false
 }
 
-const getTableRows = async (page) => {
+const getRelevantTableRows = async (page) => {
   const tableRowSelector = ".list-item-wrapper"
+  const indicatorNameSelector = ".short-name"
   await page.waitForSelector(tableRowSelector)
-  return page.$$(tableRowSelector)
+  const allTableRows = await page.$$(tableRowSelector)
+  const relevantTableRows = await Promise.all(
+    allTableRows.map(async tableRow => {
+      const relevant = await tableRow.$eval(
+        indicatorNameSelector, (indicatorNameEl, wantedIndicatorNames) => (
+          wantedIndicatorNames.includes(indicatorNameEl.innerText)
+        ), wantedIndicatorNames)
+      if (relevant) {
+        return tableRow
+      }
+    })
+  )
+  return relevantTableRows.filter(row => row)
 }
 
 /*
@@ -70,9 +89,11 @@ const extractIndicator = async (row, recordedYears) => {
     const indicator = {
       name: columns[0].innerText
     }
-    if (indicator.name === "Markkina-arvo") {
-      indicator.name = "Markkina-arvo (P)"
-    }
+    if (indicator.name === "Markkina-arvo (P)") {
+      indicator.name = "Markkina-arvo"
+    } else if (indicator.name === "Oman pääoman tuotto, %") {
+      indicator.name = "Oman pääoman tuotto-%"
+    } 
     for (let i = 0; i < recordedYears.length; i++) {
       indicator[recordedYears[i]] = columns[i + 1].innerText.replace(",", "") 
     }

@@ -12,19 +12,23 @@ const main = async () => {
   const stocks = []
   for (let i = 0; stockNamesAndUrls.length > 0; i+=5) {
     const subArray = stockNamesAndUrls.splice(0, 5)
-    const stockPromises = await Promise.all(subArray.map(async stockNameAndUrl => ({
-      name: stockNameAndUrl.name,
-      url: stockNameAndUrl.url,
-      indicators: await stockPageExtractor.getIndicators(stockNameAndUrl.url)
-    })))
+    const stockPromises = await Promise.all(subArray.map(
+      async stockNameAndUrl => ({
+        name: stockNameAndUrl.name,
+        url: stockNameAndUrl.url,
+        indicators: await stockPageExtractor.getIndicators(
+          stockNameAndUrl.url
+        )
+      })
+    ))
     stocks.push(...stockPromises)
     console.log(`${stockNamesAndUrls.length} stocks remaining`)
   }
   await browsingManager.closeBrowser()
   if (stocks.length !== numOfStocksInMarket) {
     console.log(
-      `Unusual amount of stocks scraped, expected ${numOfStocksInMarket}, ` + 
-      `got ${stocks.length}`
+      "Unusual amount of stocks scraped, expected " + 
+      `${numOfStocksInMarket}, got ${stocks.length}`
     )
   }
   const filteredStocks = stocks.filter(stock => stock.indicators)
@@ -37,7 +41,8 @@ const main = async () => {
     return dbManager.saveStock(stock)
   }))
   await dbManager.closeConnection()
-  console.log(`${savedStocks.filter(stock => stock).length} stocks saved/updated`)
+  console.log(`${savedStocks.filter(stock => stock).length} stocks ` +
+   "saved/updated")
 }
 
 main()
