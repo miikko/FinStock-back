@@ -26,7 +26,7 @@ const saveStock = async (stock) => {
 }
 
 const updateStock = async (stock) => {
-  const existingStock = await Stock.findOne({ name: stock.name })
+  const existingStock = await Stock.findOne({ url: stock.url })
   const indicatorNames = Object.keys(stock.indicators)
   const someIndicatorName = indicatorNames[0]
   const savedIndicator = existingStock.indicators[someIndicatorName]
@@ -59,10 +59,15 @@ const findStockByName = async (stockName) => {
   return Stock.findOne({ name: stockName })
 }
 
+const findStockByURL = async (stockUrl) => {
+  return Stock.findOne({ url: stockUrl })
+}
+
 module.exports = {
   openConnection,
   closeConnection,
   saveStock,
   updateStock,
-  findStockByName
+  findStockByName,
+  findStockByURL
 }

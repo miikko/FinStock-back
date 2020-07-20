@@ -34,7 +34,7 @@ const main = async () => {
   const filteredStocks = stocks.filter(stock => stock.indicators)
   await dbManager.openConnection(config.MONGODB_URL)
   const savedStocks = await Promise.all(filteredStocks.map(async stock => {
-    const existingStock = await dbManager.findStockByName(stock.name)
+    const existingStock = await dbManager.findStockByURL(stock.url)
     if (existingStock) {
       return dbManager.updateStock(stock)
     }
